@@ -39,8 +39,8 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		if (dbCountry != null) {
 			return dbCountry;
 		}
-		return counteryRepository
-				.save((Country) RestUtils.get(Constants.GET_ONE_URI+alpha3Code, Country.class, Collections.EMPTY_MAP));
+		return counteryRepository.save(
+				(Country) RestUtils.get(Constants.GET_ONE_URI + alpha3Code, Country.class, Collections.EMPTY_MAP));
 	}
 
 	private Country checkDB(String alpha3Code) {

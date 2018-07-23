@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.map.repository.config.EnableMapRepositories;
 
-
 @SpringBootApplication
 @EnableMapRepositories
 public class ConsumerApplication {
@@ -15,5 +14,6 @@ public class ConsumerApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext cxt = SpringApplication.run(ConsumerApplication.class, args);
-		logger.info("Running on port: " + cxt.getEnvironment().getProperty("local.server.port"));	}
+		logger.info("Running on port: " + cxt.getEnvironment().getProperty("local.server.port"));
+	}
 }

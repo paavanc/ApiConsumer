@@ -4,10 +4,18 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.keyvalue.annotation.KeySpace;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @KeySpace("Country")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Country {
+
+	@Override
+	public String toString() {
+		return "Country [name=" + name + ", alpha2Code=" + alpha2Code + ", alpha3Code=" + alpha3Code + "]";
+	}
 
 	String name;
 	String alpha2Code;
@@ -37,4 +45,5 @@ public class Country {
 	public void setAlpha3Code(String alpha3Code) {
 		this.alpha3Code = alpha3Code;
 	}
+
 }

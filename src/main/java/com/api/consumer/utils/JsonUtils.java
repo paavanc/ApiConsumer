@@ -1,16 +1,16 @@
 package com.api.consumer.utils;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 public class JsonUtils {
 

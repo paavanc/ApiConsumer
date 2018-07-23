@@ -1,12 +1,10 @@
 package com.api.consumer.utils;
 
 import java.io.IOException;
-import java.net.URL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ApiUtils {
-
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 
