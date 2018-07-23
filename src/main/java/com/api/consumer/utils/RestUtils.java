@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.api.consumer.exception.ConsumerException;
@@ -45,10 +46,19 @@ public class RestUtils {
 		return restTemplate;
 	}
 
+	private static String testStatus(ResponseEntity<String> entity) {
+
+		if (entity.getStatusCode().is4xxClientError()) {
+			throw new ConsumerException(entity.getBody(), entity.getStatusCode());
+		}
+		return entity.getBody();
+	}
+
 	public static <T> T create(String url, T s, Class<T> classType, Map<String, String> headers) {
 		try {
-			return JsonUtils.toObject(getRestTemplate()
-					.postForEntity(url, new HttpEntity<>(s, creatHeaders(headers)), String.class).getBody(), classType);
+			return JsonUtils.toObject(testStatus(
+					getRestTemplate().postForEntity(url, new HttpEntity<>(s, creatHeaders(headers)), String.class)),
+					classType);
 		} catch (Exception e) {
 			throw new ConsumerException(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
@@ -56,30 +66,27 @@ public class RestUtils {
 
 	public static <T> T update(String url, Class<T> classType, Map<String, String> headers) {
 		try {
-			return JsonUtils.toObject(getRestTemplate()
-					.exchange(url, HttpMethod.PUT, new HttpEntity<>(creatHeaders(headers)), String.class).getBody(),
-					classType);
+			return JsonUtils.toObject(testStatus(getRestTemplate().exchange(url, HttpMethod.PUT,
+					new HttpEntity<>(creatHeaders(headers)), String.class)), classType);
 		} catch (Exception e) {
 			throw new ConsumerException(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	public static <T> T get(String url, T s, Class<T> classType, Map<String, String> headers) {
+	public static <T> T get(String url, Class<T> classType, Map<String, String> headers) {
 		try {
-			return JsonUtils.toObject(getRestTemplate()
-					.exchange(url, HttpMethod.GET, new HttpEntity<>(creatHeaders(headers)), String.class).getBody(),
-					classType);
+			return JsonUtils.toObjectInContainer(testStatus(getRestTemplate().exchange(url, HttpMethod.GET,
+					new HttpEntity<>(creatHeaders(headers)), String.class)), classType);
 		} catch (Exception e) {
 			throw new ConsumerException(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
-	public static <T> List<T> getAll(String url, T s, Class<T> classType, Map<String, String> headers) {
+	public static <T> List<T> getAll(String url, Class<T> classType, Map<String, String> headers) {
 		try {
-			return JsonUtils.toListOfObjects(getRestTemplate()
-					.exchange(url, HttpMethod.GET, new HttpEntity<>(creatHeaders(headers)), String.class).getBody(),
-					classType);
+			return JsonUtils.toListInContainer(testStatus(getRestTemplate().exchange(url, HttpMethod.GET,
+					new HttpEntity<>(creatHeaders(headers)), String.class)), classType);
 		} catch (Exception e) {
 			throw new ConsumerException(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
