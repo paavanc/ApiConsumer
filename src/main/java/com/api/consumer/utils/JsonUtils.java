@@ -19,8 +19,9 @@ public class JsonUtils {
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 
+	
 	static {
-		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+		//mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 	}
 
@@ -63,6 +64,7 @@ public class JsonUtils {
 			return Collections.emptyList();
 		}
 
+		System.out.println(json);
 		JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, classType);
 
 		return mapper.readValue(json, listType);

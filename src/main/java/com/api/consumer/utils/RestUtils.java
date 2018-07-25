@@ -48,6 +48,7 @@ public class RestUtils {
 
 	private static String testStatus(ResponseEntity<String> entity) {
 
+		System.out.println(entity.getStatusCode());
 		if (entity.getStatusCode().is4xxClientError()) {
 			throw new ConsumerException(entity.getBody(), entity.getStatusCode());
 		}
@@ -75,7 +76,7 @@ public class RestUtils {
 
 	public static <T> T get(String url, Class<T> classType, Map<String, String> headers) {
 		try {
-			return JsonUtils.toObjectInContainer(testStatus(getRestTemplate().exchange(url, HttpMethod.GET,
+			return JsonUtils.toObject(testStatus(getRestTemplate().exchange(url, HttpMethod.GET,
 					new HttpEntity<>(creatHeaders(headers)), String.class)), classType);
 		} catch (Exception e) {
 			throw new ConsumerException(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -85,7 +86,7 @@ public class RestUtils {
 
 	public static <T> List<T> getAll(String url, Class<T> classType, Map<String, String> headers) {
 		try {
-			return JsonUtils.toListInContainer(testStatus(getRestTemplate().exchange(url, HttpMethod.GET,
+			return JsonUtils.toListOfObjects(testStatus(getRestTemplate().exchange(url, HttpMethod.GET,
 					new HttpEntity<>(creatHeaders(headers)), String.class)), classType);
 		} catch (Exception e) {
 			throw new ConsumerException(e.getMessage(), HttpStatus.BAD_REQUEST);
